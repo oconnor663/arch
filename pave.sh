@@ -1,8 +1,17 @@
 #! /bin/bash
 
-set -ex
+read -p "Username: " user
+read -s -p "Password: " password; echo
+read -s -p "Confirm: " confirm; echo
+if [ "$password" != "$confirm" ]; then
+  echo "Passwords don't match."
+  exit 1
+fi
 
-chroot="arch-chroot /mnt"
+
+CHROOT="arch-chroot /mnt"
+
+set -ev
 
 # clear the partition table and create one big partition
 sgdisk -o /dev/sda
@@ -22,12 +31,19 @@ ln -s /usr/share/zoneinfo/US/Pacific /mnt/etc/localtime
 
 echo 'LANG="en_US.UTF-8"' > /mnt/etc/locale.conf
 echo 'en_US.UTF-8 UTF-8'  > /mnt/etc/locale.gen
-$chroot locale-gen
+$CHROOT locale-gen
 
-$chroot mkinitcpio -p linux
+$CHROOT mkinitcpio -p linux
 
-$chroot syslinux-install_update -i -a -m
+$CHROOT syslinux-install_update -i -a -m
 # syslinux targets sda3 by default, not sure why
 sed -i s/sda3/sda1/g /mnt/boot/syslinux/syslinux.cfg
 
-$chroot passwd
+cat > /mnt/etc/sudoers << END
+root ALL=(ALL) ALL
+%wheel ALL=(ALL) ALL
+END
+
+$CHROOT useradd -m -G wheel "$user"
+echo "$user:$password" | $CHROOT chpasswd
+$CHROOT passwd -l root
