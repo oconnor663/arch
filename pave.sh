@@ -14,7 +14,7 @@ CHROOT="arch-chroot /mnt"
 set -ev
 
 # clear the partition table and create one big partition
-sgdisk -o /dev/sda
+sgdisk -o -g /dev/sda
 sgdisk -n 0:0:0 /dev/sda
 mkfs -t ext4 /dev/sda1
 mount /dev/sda1 /mnt
