@@ -21,7 +21,7 @@ mount /dev/sda1 /mnt
 
 # install base packages. syslinux is our bootloader, and it requires
 # gptfdisk to work with the GPT partitions we created above
-pacstrap /mnt base base-devel syslinux gptfdisk
+pacstrap /mnt base base-devel syslinux gptfdisk networkmanager
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
