@@ -47,7 +47,8 @@ sed -i s*root=/dev/sda3*root=$main_partition* /mnt/boot/syslinux/syslinux.cfg
 
 cat > /mnt/etc/sudoers << END
 root ALL=(ALL) ALL
-%wheel ALL=(ALL) ALL
+%wheel ALL=(ALL) NOPASSWD: ALL
+%sudo ALL=(ALL) NOPASSWD: ALL
 END
 
 $CHROOT useradd -m -G wheel "$user"
