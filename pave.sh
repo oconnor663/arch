@@ -19,8 +19,15 @@ CHROOT="arch-chroot /mnt"
 set -ev
 
 # clear the partition table and create one big partition
-sgdisk -o -g ${pave_drive}
-sgdisk -n 0:0:0 ${pave_drive}
+fdisk $pave_drive << END
+o
+n
+p
+1
+
+
+w
+END
 main_partition=${pave_drive}1
 mkfs -t ext4 $main_partition
 mount $main_partition /mnt
