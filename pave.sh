@@ -34,7 +34,7 @@ mount $main_partition /mnt
 
 # install base packages. syslinux is our bootloader, and it requires
 # gptfdisk to work with the GPT partitions we created above
-pacstrap /mnt base base-devel syslinux gptfdisk networkmanager zsh
+pacstrap /mnt base base-devel grub-bios networkmanager zsh
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
@@ -48,9 +48,9 @@ $CHROOT locale-gen
 
 $CHROOT mkinitcpio -p linux
 
-$CHROOT syslinux-install_update -i -a -m
-# syslinux targets sda3 by default, not sure why
-sed -i s*root=/dev/sda3*root=$main_partition* /mnt/boot/syslinux/syslinux.cfg
+$CHROOT grub-install --recheck $pave_drive
+$CHROOT cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+$CHROOT grub-mkconfig -o /boot/grub/grub.cfg
 
 cat > /mnt/etc/sudoers << END
 root ALL=(ALL) ALL
