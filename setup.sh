@@ -23,6 +23,7 @@ gui_packages=(
   gedit
   gimp
   gnome
+  ttf-ubuntu-font-family
   virtualbox-guest-utils
   vlc
   xf86-input-synaptics
@@ -30,6 +31,7 @@ gui_packages=(
   xf86-video-ati
   xf86-video-intel
   xf86-video-nv
+  xorg-xmodmap
 )
 
 gui_services=(
@@ -52,10 +54,14 @@ install_aur() {
   done
 }
 
-set -ev
+set -ex
+
+install_aur package-query yaourt
+
+# pretty fonts
+install_aur freetype2-infinality fontconfig-infinality
+infctl setstyle osx
 
 pacman -S --noconfirm --needed ${core_packages[@]} ${gui_packages[@]}
 
 systemctl enable ${core_services[@]} ${gui_services[@]}
-
-install_aur packer
