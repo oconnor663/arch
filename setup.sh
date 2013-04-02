@@ -13,8 +13,8 @@ core_packages=(
 )
 
 core_services=(
-  NetworkManager
-  ntpd
+  NetworkManager.service
+  ntpd.service
 )
 
 gui_packages=(
