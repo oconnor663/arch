@@ -4,15 +4,17 @@ core_packages=(
   git
   ipython
   mercurial
-  openssh
   networkmanager
+  ntp
+  openssh
   tmux
   vim
   zsh
 )
 
 core_services=(
-  NetworkManager.service
+  NetworkManager
+  ntpd
 )
 
 gui_packages=(
