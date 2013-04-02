@@ -27,7 +27,7 @@ mount $main_partition /mnt
 
 # install base packages. syslinux is our bootloader, and it requires
 # gptfdisk to work with the GPT partitions we created above
-pacstrap /mnt base base-devel syslinux gptfdisk networkmanager
+pacstrap /mnt base base-devel syslinux gptfdisk networkmanager zsh
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
@@ -51,7 +51,7 @@ root ALL=(ALL) ALL
 %sudo ALL=(ALL) NOPASSWD: ALL
 END
 
-$CHROOT useradd -m -G wheel "$user"
+$CHROOT useradd -m -G wheel -s /bin/zsh "$user"
 echo "$user:$password" | $CHROOT chpasswd
 $CHROOT passwd -l root
 
