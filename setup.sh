@@ -50,18 +50,20 @@ install_aur() {
     curl -o $tarball https://aur.archlinux.org/packages/${package:0:2}/$package/$tarball
     tar xf $tarball
     cd $package
-    makepkg -si --asroot --noconfirm
+    # --noconfirm is unsuitable, because it answers No to removing
+    # conflicting packages. Pipe in `yes` instead :(
+    yes | makepkg -si --asroot
   done
 }
 
 set -ex
+
+pacman -S --noconfirm --needed ${core_packages[@]} ${gui_packages[@]}
+
+systemctl enable ${core_services[@]} ${gui_services[@]}
 
 install_aur package-query yaourt
 
 # pretty fonts
 install_aur freetype2-infinality fontconfig-infinality
 infctl setstyle osx
-
-pacman -S --noconfirm --needed ${core_packages[@]} ${gui_packages[@]}
-
-systemctl enable ${core_services[@]} ${gui_services[@]}
