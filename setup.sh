@@ -2,6 +2,7 @@
 
 core_packages=(
   git
+  gnupg
   ipython
   mercurial
   networkmanager
@@ -9,6 +10,7 @@ core_packages=(
   openssh
   tmux
   vim
+  wget
   zsh
 )
 
@@ -65,5 +67,4 @@ systemctl enable ${core_services[@]} ${gui_services[@]}
 install_aur package-query yaourt
 
 # pretty fonts
-install_aur freetype2-infinality fontconfig-infinality
-infctl setstyle osx
+install_aur freetype2-ubuntu fontconfig-ubuntu cairo-ubuntu
