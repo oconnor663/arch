@@ -17,6 +17,7 @@ core_packages=(
 core_services=(
   NetworkManager.service
   ntpd.service
+  sshd.service
 )
 
 gui_packages=(
