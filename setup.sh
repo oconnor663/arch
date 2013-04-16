@@ -8,6 +8,7 @@ core_packages=(
   networkmanager
   ntp
   openssh
+  pkgtools
   tmux
   vim
   wget
@@ -26,6 +27,7 @@ gui_packages=(
   gedit
   gimp
   gnome
+  gnome-tweak-tool
   ttf-ubuntu-font-family
   virtualbox-guest-utils
   vlc
