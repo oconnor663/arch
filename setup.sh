@@ -35,7 +35,7 @@ gui_packages=(
   xf86-video-vesa
   xf86-video-ati
   xf86-video-intel
-  xf86-video-nv
+  xf86-video-nouveau
   xorg-xmodmap
 )
 
