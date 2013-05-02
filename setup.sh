@@ -3,6 +3,7 @@
 core_packages=(
   git
   gnupg
+  htop
   ipython
   mercurial
   networkmanager
@@ -12,6 +13,7 @@ core_packages=(
   tmux
   vim
   wget
+  zip
   zsh
 )
 
