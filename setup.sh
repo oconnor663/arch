@@ -64,6 +64,11 @@ install_aur() {
 
 set -ex
 
+# Caps Lock to Control in console mode
+keymap_dir=/usr/share/kbd/keymaps/i386/qwerty
+cat $keymap_dir/us.map.gz | gunzip | sed 's/keycode  58 = Caps_Lock/keycode  58 = Control/' | gzip > $keymap_dir/us-capscontrol.map.gz
+echo KEYMAP=us-capscontrol > /etc/vconsole.conf
+
 pacman -S --noconfirm --needed ${core_packages[@]} ${gui_packages[@]}
 
 systemctl enable ${core_services[@]} ${gui_services[@]}
