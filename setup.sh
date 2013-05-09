@@ -76,4 +76,4 @@ systemctl enable ${core_services[@]} ${gui_services[@]}
 install_aur package-query yaourt
 
 # pretty fonts
-install_aur freetype2-ubuntu fontconfig-ubuntu cairo-ubuntu
+install_aur freetype2-ubuntu fontconfig-ubuntu cairo-ubuntu otf-ipafont
