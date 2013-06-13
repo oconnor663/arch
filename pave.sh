@@ -44,6 +44,13 @@ pacstrap /mnt base base-devel grub-bios networkmanager zsh
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
+# create a swap file of the same size as the total memory
+swap_size=$(free --bytes | grep Mem: | awk '{print $2}')
+fallocate -l $swap_size /mnt/swapfile
+chmod 600 /mnt/swapfile
+mkswap /mnt/swapfile
+echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+
 echo arch-host > /mnt/etc/hostname
 
 ln -s /usr/share/zoneinfo/US/Pacific /mnt/etc/localtime
