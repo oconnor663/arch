@@ -58,7 +58,7 @@ root ALL=(ALL) ALL
 %sudo ALL=(ALL) NOPASSWD: ALL
 END
 
-$CHROOT useradd -m -G wheel -s /bin/zsh "$user"
+$CHROOT useradd -m -G wheel -s /usr/bin/zsh "$user"
 echo "$user:$password" | $CHROOT chpasswd
 $CHROOT passwd -l root
 
