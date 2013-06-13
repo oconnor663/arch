@@ -54,7 +54,7 @@ install_aur() {
       continue
     fi
 
-    cd `mktemp -d`
+    cd `mktemp -d --tmpdir=/var/tmp aur_${package}_XXXXXX`
     tarball=$package.tar.gz
     curl -o $tarball https://aur.archlinux.org/packages/${package:0:2}/$package/$tarball
     tar xf $tarball

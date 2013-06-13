@@ -63,7 +63,4 @@ echo "$user:$password" | $CHROOT chpasswd
 $CHROOT passwd -l root
 
 curl https://raw.github.com/oconnor663/arch/master/setup.sh > setup.sh
-# setup.sh uses a fair amount of tmp space (~150 MB), so we don't want
-# to use the tmpfs in RAM that arch-chroot creates. umount it before
-# running the script.
-(echo "umount /tmp" ; cat setup.sh) | $CHROOT bash
+cat setup.sh | $CHROOT bash
