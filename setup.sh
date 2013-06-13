@@ -23,6 +23,13 @@ core_services=(
   sshd.service
 )
 
+graphics_drivers=(
+  xf86-video-vesa
+  xf86-video-ati
+  xf86-video-intel
+  xf86-video-nouveau
+)
+
 gui_packages=(
   audacity
   chromium
@@ -34,10 +41,6 @@ gui_packages=(
   virtualbox-guest-utils
   vlc
   xf86-input-synaptics
-  xf86-video-vesa
-  xf86-video-ati
-  xf86-video-intel
-  xf86-video-nouveau
 )
 
 gui_services=(
@@ -68,6 +71,12 @@ set -ex
 keymap_dir=/usr/share/kbd/keymaps/i386/qwerty
 cat $keymap_dir/us.map.gz | gunzip | sed 's/keycode  58 = Caps_Lock/keycode  58 = Control/' | gzip > $keymap_dir/us-capscontrol.map.gz
 echo KEYMAP=us-capscontrol > /etc/vconsole.conf
+
+if ! pacman -Q nvidia-libgl > /dev/null 2>&1 ; then
+  # Open source drivers conflict with proprietary Nvidia stuff. Don't try to
+  # install them if Nvidia is present
+  pacman -S --noconfirm --needed ${graphics_drivers[@]}
+fi
 
 pacman -S --noconfirm --needed ${core_packages[@]} ${gui_packages[@]}
 
