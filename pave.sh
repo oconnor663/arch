@@ -18,6 +18,12 @@ CHROOT="arch-chroot /mnt"
 
 set -ev
 
+# install tools that are missing from the basic media
+pacman -Sy --noconfirm --needed reflector
+
+# update the mirror list
+reflector --country 'United States' -f 5 --save /etc/pacman.d/mirrorlist
+
 # clear the partition table and create one big partition
 fdisk $pave_drive << END
 o
