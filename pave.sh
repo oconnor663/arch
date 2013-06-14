@@ -24,19 +24,29 @@ pacman -Sy --noconfirm --needed reflector
 # update the mirror list
 reflector --country 'United States' -f 5 --save /etc/pacman.d/mirrorlist
 
-# clear the partition table and create one big partition
-fdisk $pave_drive << END
-o
-n
-p
-1
+# clear the partition table
+sgdisk --clear --mbrtogpt $pave_drive
+# create BIOS boot partition
+sgdisk --new 1:0:+2MB --typecode 1:EF02 $pave_drive
+# create the /boot partition
+sgdisk --new 2:0:+200MB --typecode 2:8300 $pave_drive
+boot_part=${pave_drive}2
+mkfs.ext4 $boot_part
+# create the root partition to be encrypted
+sgdisk --new 3:0:0 --typecode 3:8E00 $pave_drive
+luks_drive=${pave_drive}3
 
+# set up LUKS encryption on the root partition
+echo -n "$password" | cryptsetup --batch-mode luksFormat $luks_drive
+echo -n "$password" | cryptsetup luksOpen $luks_drive lvm
+vgcreate mainvg /dev/mapper/lvm
+lvcreate -l 100%FREE mainvg -n rootlv
+mkfs.ext4 /dev/mapper/mainvg-rootlv
 
-w
-END
-main_partition=${pave_drive}1
-mkfs -t ext4 $main_partition
-mount $main_partition /mnt
+# mount root and /boot partitions for installation
+mount /dev/mainvg/rootlv /mnt
+mkdir -p /mnt/boot
+mount $boot_part /mnt/boot
 
 # install base packages. syslinux is our bootloader, and it requires
 # gptfdisk to work with the GPT partitions we created above
@@ -58,6 +68,12 @@ ln -s /usr/share/zoneinfo/US/Pacific /mnt/etc/localtime
 echo 'LANG="en_US.UTF-8"' > /mnt/etc/locale.conf
 echo 'en_US.UTF-8 UTF-8'  > /mnt/etc/locale.gen
 $CHROOT locale-gen
+
+# add LUKS hooks for mkinitcpio...
+newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems/keymap encrypt lvm2 filesystems/')
+sed -i "/^HOOKS=/ c $newhooks" /mnt/etc/mkinitcpio.conf
+# ...and for grub
+sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$luks_drive:mainvg\"" /mnt/etc/default/grub
 
 $CHROOT mkinitcpio -p linux
 
