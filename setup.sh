@@ -33,10 +33,12 @@ graphics_drivers=(
 gui_packages=(
   audacity
   chromium
+  flashplugin
   gedit
   gimp
   gnome
   gnome-tweak-tool
+  seahorse
   ttf-ubuntu-font-family
   virtualbox-guest-utils
   vlc
