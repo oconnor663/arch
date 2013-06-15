@@ -24,21 +24,34 @@ pacman -Sy --noconfirm --needed reflector
 # update the mirror list
 reflector --country 'United States' -f 5 --save /etc/pacman.d/mirrorlist
 
-# clear the partition table
-sgdisk --clear --mbrtogpt $pave_drive
-# create BIOS boot partition
-sgdisk --new 1:0:+2MB --typecode 1:EF02 $pave_drive
-# create the /boot partition
-sgdisk --new 2:0:+200MB --typecode 2:8300 $pave_drive
-boot_part=${pave_drive}2
+# clear the disk and create the boot and root partitions
+# root partition is of the LVM type (8e)
+fdisk $pave_drive << END
+o
+n
+p
+1
+
++200M
+n
+p
+2
+
+
+t
+2
+8e
+w
+END
+
+# format both new partitions
+boot_part=${pave_drive}1
 mkfs.ext4 $boot_part
-# create the root partition to be encrypted
-sgdisk --new 3:0:0 --typecode 3:8E00 $pave_drive
-luks_drive=${pave_drive}3
+root_part=${pave_drive}2
 
 # set up LUKS encryption on the root partition
-echo -n "$password" | cryptsetup --batch-mode luksFormat $luks_drive
-echo -n "$password" | cryptsetup luksOpen $luks_drive lvm
+echo -n "$password" | cryptsetup --batch-mode luksFormat $root_part
+echo -n "$password" | cryptsetup luksOpen $root_part lvm
 vgcreate mainvg /dev/mapper/lvm
 lvcreate -l 100%FREE mainvg -n rootlv
 mkfs.ext4 /dev/mapper/mainvg-rootlv
@@ -73,7 +86,7 @@ $CHROOT locale-gen
 newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems/keymap encrypt lvm2 filesystems/')
 sed -i "/^HOOKS=/ c $newhooks" /mnt/etc/mkinitcpio.conf
 # ...and for grub
-sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$luks_drive:mainvg\"" /mnt/etc/default/grub
+sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$root_part:mainvg\"" /mnt/etc/default/grub
 
 $CHROOT mkinitcpio -p linux
 
