@@ -47,11 +47,11 @@ END
 # format both new partitions
 boot_part=${pave_drive}1
 mkfs.ext4 $boot_part
-root_part=${pave_drive}2
+luks_part=${pave_drive}2
 
 # set up LUKS encryption on the root partition
-echo -n "$password" | cryptsetup --batch-mode luksFormat $root_part
-echo -n "$password" | cryptsetup luksOpen $root_part lvm
+echo -n "$password" | cryptsetup --batch-mode luksFormat $luks_part
+echo -n "$password" | cryptsetup luksOpen $luks_part lvm
 vgcreate mainvg /dev/mapper/lvm
 lvcreate -l 100%FREE mainvg -n rootlv
 mkfs.ext4 /dev/mapper/mainvg-rootlv
@@ -69,10 +69,12 @@ genfstab -p /mnt >> /mnt/etc/fstab
 
 # create a swap file of the same size as the total memory
 swap_size=$(free --bytes | grep Mem: | awk '{print $2}')
-fallocate -l $swap_size /mnt/swapfile
-chmod 600 /mnt/swapfile
-mkswap /mnt/swapfile
+swap_path=/mnt/swapfile
+fallocate -l $swap_size $swap_path
+chmod 600 $swap_path
+mkswap $swap_path
 echo "/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+swapfile_offset=$(filefrag -v $swap_path | grep -w 0: | awk '{print $4}' | sed 's/\.\.//')
 
 echo arch-host > /mnt/etc/hostname
 
@@ -83,10 +85,10 @@ echo 'en_US.UTF-8 UTF-8'  > /mnt/etc/locale.gen
 $CHROOT locale-gen
 
 # add LUKS hooks for mkinitcpio...
-newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems/keymap encrypt lvm2 filesystems/')
+newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems keyboard/keymap keyboard encrypt resume lvm2 filesystems/')
 sed -i "/^HOOKS=/ c $newhooks" /mnt/etc/mkinitcpio.conf
 # ...and for grub
-sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$root_part:mainvg\"" /mnt/etc/default/grub
+sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$luks_part:mainvg resume=/dev/mapper/mainvg-rootlv resume_offset=$swapfile_offset\"" /mnt/etc/default/grub
 
 $CHROOT mkinitcpio -p linux
 
