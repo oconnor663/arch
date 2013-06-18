@@ -85,7 +85,7 @@ echo 'en_US.UTF-8 UTF-8'  > /mnt/etc/locale.gen
 $CHROOT locale-gen
 
 # add LUKS hooks for mkinitcpio...
-newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems keyboard/keymap keyboard encrypt resume lvm2 filesystems/')
+newhooks=$(grep -E '^HOOKS=' /mnt/etc/mkinitcpio.conf | sed 's/filesystems keyboard/keymap keyboard usbinput encrypt resume lvm2 filesystems/')
 sed -i "/^HOOKS=/ c $newhooks" /mnt/etc/mkinitcpio.conf
 # ...and for grub
 sed -i "/^GRUB_CMDLINE_LINUX=/ c GRUB_CMDLINE_LINUX=\"cryptdevice=$luks_part:mainvg resume=/dev/mapper/mainvg-rootlv resume_offset=$swapfile_offset\"" /mnt/etc/default/grub
