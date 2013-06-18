@@ -1,6 +1,7 @@
 #! /bin/bash
 
 core_packages=(
+  ack
   git
   gnupg
   htop
