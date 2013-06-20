@@ -7,6 +7,7 @@ core_packages=(
   htop
   ipython
   mercurial
+  mlocate
   networkmanager
   ntp
   openssh
