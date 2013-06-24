@@ -63,7 +63,7 @@ mount $boot_part /mnt/boot
 
 # install base packages. syslinux is our bootloader, and it requires
 # gptfdisk to work with the GPT partitions we created above
-pacstrap /mnt base base-devel grub-bios networkmanager zsh
+pacstrap /mnt base base-devel grub networkmanager zsh
 
 genfstab -p /mnt >> /mnt/etc/fstab
 
