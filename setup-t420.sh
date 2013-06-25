@@ -6,6 +6,9 @@ set -ev
 if pacman -Qsq | grep mesa-libgl > /dev/null; then
   # This package conflicts with nvidia-libgl. Force remove it if it's installed.
   pacman -Rdd --noconfirm mesa-libgl
+  # Clear out other drivers and their dependencies, since they'll break system
+  # updates with the above conflict.
+  pacman -Rs --noconfirm $(pacman -Qq | grep \^xf86-video-)
 fi
 pacman -S --noconfirm --needed nvidia
 
