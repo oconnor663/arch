@@ -2,6 +2,19 @@
 
 pave_drive=/dev/sda
 
+#pacman_mirror=0.0.0.0:8080
+
+prepend_mirror() {
+  if [ -z $pacman_mirror ] ; then
+    return
+  fi
+  mirrorfile=/etc/pacman.d/mirrorlist
+  tempfile=`mktemp`
+  echo "Server = http://$pacman_mirror" > $tempfile
+  cat $mirrorfile >> $tempfile
+  cp $tempfile $mirrorfile
+}
+
 echo "About to DELETE EVERYTHING from $pave_drive."
 echo "If you're not sure, CTRL-C now."
 echo
@@ -19,10 +32,12 @@ CHROOT="arch-chroot /mnt"
 set -ev
 
 # install tools that are missing from the basic media
+prepend_mirror
 pacman -Sy --noconfirm --needed reflector
 
 # update the mirror list
 reflector --country 'United States' -f 5 --save /etc/pacman.d/mirrorlist
+prepend_mirror
 
 # clear the disk and create the boot and root partitions
 # root partition is of the LVM type (8e)
