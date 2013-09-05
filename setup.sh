@@ -13,7 +13,6 @@ core_packages=(
   openssh
   pkgtools
   tmux
-  vim
   wget
   zip
   zsh
@@ -40,6 +39,7 @@ gui_packages=(
   gimp
   gnome
   gnome-tweak-tool
+  gvim
   seahorse
   ttf-ubuntu-font-family
   virtualbox-guest-utils
