@@ -83,6 +83,11 @@ root ALL=(ALL) ALL
 %sudo ALL=(ALL) NOPASSWD: ALL
 END
 
+# kill the beep
+cat > /etc/modprobe.d/nobeep.conf << END
+blacklist pcspkr
+END
+
 if ! pacman -Q nvidia-libgl > /dev/null 2>&1 ; then
   # Open source drivers conflict with proprietary Nvidia stuff. Don't try to
   # install them if Nvidia is present
