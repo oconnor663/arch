@@ -76,6 +76,13 @@ keymap_dir=/usr/share/kbd/keymaps/i386/qwerty
 cat $keymap_dir/us.map.gz | gunzip | sed 's/keycode  58 = Caps_Lock/keycode  58 = Control/' | gzip > $keymap_dir/us-capscontrol.map.gz
 echo KEYMAP=us-capscontrol > /etc/vconsole.conf
 
+# sudoers rules
+cat > /etc/sudoers << END
+root ALL=(ALL) ALL
+%wheel ALL=(ALL) NOPASSWD: ALL
+%sudo ALL=(ALL) NOPASSWD: ALL
+END
+
 if ! pacman -Q nvidia-libgl > /dev/null 2>&1 ; then
   # Open source drivers conflict with proprietary Nvidia stuff. Don't try to
   # install them if Nvidia is present

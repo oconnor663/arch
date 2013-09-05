@@ -111,12 +111,6 @@ $CHROOT grub-install --recheck $pave_drive
 $CHROOT cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 $CHROOT grub-mkconfig -o /boot/grub/grub.cfg
 
-cat > /mnt/etc/sudoers << END
-root ALL=(ALL) ALL
-%wheel ALL=(ALL) NOPASSWD: ALL
-%sudo ALL=(ALL) NOPASSWD: ALL
-END
-
 $CHROOT useradd -m -G wheel -s /usr/bin/zsh "$user"
 echo "$user:$password" | $CHROOT chpasswd
 $CHROOT passwd -l root
