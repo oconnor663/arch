@@ -1,0 +1,6 @@
+encrypted disk
+grub quickstart, non-quiet, encryption
+initcpio encryption hooks
+caps lock -> control
+blacklist pcspkr
+sudoers w/o password
