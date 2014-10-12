@@ -4,3 +4,4 @@ initcpio encryption hooks
 caps lock -> control
 blacklist pcspkr
 sudoers w/o password
+auto login
