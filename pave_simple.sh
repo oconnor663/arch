@@ -27,3 +27,8 @@ echo Formatting main partition with btrfs.
 mkfs.btrfs -f "${drive}1"
 echo Formatting swap.
 mkswap "${drive}2"
+
+echo Mounting "${drive}1" at /mnt.
+mount "${drive}1" /mnt
+echo Activating swap.
+swapon "${drive}2"
