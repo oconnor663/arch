@@ -2,17 +2,23 @@
 
 core_packages=(
   ack
+  btrfs-progs
+  curl
   git
   gnupg
   htop
   ipython
   mercurial
   mlocate
+  ncdu
   networkmanager
   ntp
   openssh
   pkgtools
+  rsync
+  subversion
   tmux
+  vim
   wget
   zip
   zsh
