@@ -1,3 +1,4 @@
+reflector
 encrypted disk
 grub quickstart, non-quiet, encryption, resume
 initcpio encrypt, lvm2, and resume hooks
