@@ -1,8 +1,0 @@
-reflector
-encrypted disk
-grub quickstart, non-quiet, encryption, resume
-initcpio encrypt, lvm2, and resume hooks
-caps lock -> control
-blacklist pcspkr
-sudoers w/o password
-auto login
