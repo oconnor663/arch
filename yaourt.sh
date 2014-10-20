@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 echo Installing package-query...
 cd $(mktemp -d)
 curl https://aur.archlinux.org/packages/pa/package-query/PKGBUILD > PKGBUILD
