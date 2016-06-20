@@ -1,0 +1,5 @@
+Remember:
+  - either networkd or NetworkManager
+  - timedatectl set-ntp true
+  - update-pacman-mirrorlist
+  - systemctl enable sshd
