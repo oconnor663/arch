@@ -19,7 +19,7 @@ fi
 
 "$base_dir"/reflector.sh
 
-pacstrap /mnt base base-devel grub networkmanager btrfs-progs ntp openssh
+pacstrap /mnt base base-devel grub networkmanager btrfs-progs openssh
 
 genfstab -p /mnt > /mnt/etc/fstab
 
@@ -34,6 +34,6 @@ arch-chroot /mnt locale-gen
 arch-chroot /mnt grub-install --target=i386-pc --recheck "$drive"
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
-arch-chroot /mnt systemctl enable NetworkManager ntpd sshd
+arch-chroot /mnt systemctl enable NetworkManager sshd
 
 echo "root:$password" | arch-chroot /mnt chpasswd
