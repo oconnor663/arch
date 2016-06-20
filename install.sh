@@ -36,4 +36,8 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 arch-chroot /mnt systemctl enable NetworkManager sshd
 
+arch-chroot /mnt timedatectl status
+arch-chroot /mnt timedatectl set-ntp true
+arch-chroot /mnt timedatectl status
+
 echo "root:$password" | arch-chroot /mnt chpasswd
