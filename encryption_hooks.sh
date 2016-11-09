@@ -23,7 +23,7 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 mkinitcpio_tmp=$(mktemp)
 
-sed '/^HOOKS=/ s/block filesystems/block encrypt lvm2 resume filesystems/' \
+sed '/^HOOKS=/ s/block filesystems/block encrypt lvm2 resume filesystems keyboard/' \
   /etc/mkinitcpio.conf > "$mkinitcpio_tmp"
 
 cp --no-preserve=mode --backup=number "$mkinitcpio_tmp" /mnt/etc/mkinitcpio.conf
