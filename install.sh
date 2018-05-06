@@ -25,7 +25,7 @@ timedatectl set-ntp on
 PARTED() {
   parted --script --align optimal "$drive" -- "$@"
 }
-PARTED mklabel gtp
+PARTED mklabel gpt
 PARTED mkpart primary 0% 512MiB
 PARTED set 1 esp on
 boot_partition="${drive}1"
