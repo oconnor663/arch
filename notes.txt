@@ -1,5 +1,0 @@
-Remember:
-  - enable dhcpcd (and NetworkManager for wifi)
-  - timedatectl set-ntp true
-  - update-pacman-mirrorlist
-  - systemctl enable sshd
