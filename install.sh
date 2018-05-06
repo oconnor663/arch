@@ -54,6 +54,7 @@ ln -sf /usr/share/zoneinfo/America/New_York /mnt/etc/localtime
 echo 'LANG="en_US.UTF-8"' > /mnt/etc/locale.conf
 echo 'en_US.UTF-8 UTF-8'  > /mnt/etc/locale.gen
 
+mkdir -p /mnt/boot/loader/entries
 cat > /mnt/boot/loader/entries/arch.conf <<END
 title   Arch Linux
 linux   /vmlinuz-linux
@@ -69,9 +70,8 @@ END
 arch-chroot /mnt bash -v -e -u -o pipefail <<END
   locale-gen
 
-  systemctl enable NetworkManager
+  systemctl enable NetworkManager systemd-timesyncd
 
-  timedatectl set-ntp on
   hwclock --systohc
 
   mkinitcpio -p linux
