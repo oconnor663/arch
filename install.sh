@@ -2,8 +2,6 @@
 
 set -v -e -u -o pipefail
 
-here=$(dirname "$BASH_SOURCE")
-
 drive="${1:-}"
 if [[ -z "$drive" ]] ; then
   echo Must specify a drive.
@@ -20,7 +18,10 @@ fi
 # Turn on NTP on the host, so that the time is synced when we get to hwclock.
 timedatectl set-ntp on
 
-"$here"/rankmirrors.sh
+curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on" \
+  | sed -e 's/^#Server/Server/' -e '/^#/d' \
+  | rankmirrors -n 5 - \
+  > /etc/pacman.d/mirrorlist
 
 PARTED() {
   parted --script --align optimal "$drive" -- "$@"
