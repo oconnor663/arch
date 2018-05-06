@@ -4,7 +4,7 @@ set -v -e -u -o pipefail
 
 here=$(dirname "$BASH_SOURCE")
 
-drive="$1"
+drive="${1:-}"
 if [[ -z "$drive" ]] ; then
   echo Must specify a drive.
   exit 1
