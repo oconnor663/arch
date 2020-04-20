@@ -4,7 +4,9 @@ set -x -v -e -u -o pipefail
 
 pacman -Syu --noconfirm zsh tmux neovim python-pynvim git htop ncdu fd fzf yay rustup mosh
 
-pacman -R --noconfirm vim
+if pacman -Q vim ; then
+  pacman -R --noconfirm vim
+fi
 
 ln -s nvim /usr/bin/vim
 
