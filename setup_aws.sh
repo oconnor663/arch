@@ -11,7 +11,6 @@ ln -s nvim /usr/bin/vim
 useradd -m jacko
 gpasswd -a jacko wheel
 chsh -s /bin/zsh jacko
-userdel -r arch
 
 echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel_nopasswd
 
@@ -33,3 +32,5 @@ cargo install --path founder
 yay -S --noconfirm peru
 ./dotfiles/install.sh
 END
+
+echo 'At this point you can log back in and manually `sudo userdel -r arch`.'
