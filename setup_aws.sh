@@ -4,8 +4,6 @@ set -x -v -e -u -o pipefail
 
 pacman -Syu --noconfirm zsh tmux neovim python-pynvim git htop ncdu fd fzf yay rustup mosh
 
-yay -S --noconfirm peru
-
 pacman -R --noconfirm vim
 
 ln -s nvim /usr/bin/vim
@@ -32,5 +30,6 @@ git clone https://github.com/oconnor663/dotfiles
 git clone https://github.com/oconnor663/founder
 rustup install stable
 cargo install --path founder
+yay -S --noconfirm peru
 ./dotfiles/install.sh
 END
