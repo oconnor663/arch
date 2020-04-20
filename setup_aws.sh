@@ -23,6 +23,7 @@ echo en_US.UTF-8 UTF-8 > /etc/locale.gen
 locale-gen
 
 sudo -u jacko bash << END
+set -x -v -e -u -o pipefail
 cd ~
 mkdir .ssh
 cat > .ssh/authorized_keys << KEY_END
