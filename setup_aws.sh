@@ -8,7 +8,7 @@ if pacman -Q vim ; then
   pacman -R --noconfirm vim
 fi
 
-ln -s nvim /usr/bin/vim
+ln -sf nvim /usr/bin/vim
 
 useradd -m jacko
 gpasswd -a jacko wheel
