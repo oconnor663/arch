@@ -2,7 +2,7 @@
 
 set -x -v -e -u -o pipefail
 
-pacman -Syu --noconfirm zsh tmux neovim python-pynvim git htop ncdu fd fzf yay rustup mosh
+pacman -Syu --noconfirm --needed zsh tmux neovim python-pynvim git htop ncdu fd fzf yay rustup mosh
 
 if pacman -Q vim ; then
   pacman -R --noconfirm vim
@@ -34,7 +34,7 @@ git clone https://github.com/oconnor663/founder
 rustup set profile minimal
 rustup install stable
 cargo install --path founder
-yay -S --noconfirm peru
+yay -S --noconfirm --needed peru
 ./dotfiles/install.sh
 END
 
