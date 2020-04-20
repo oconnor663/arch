@@ -31,6 +31,7 @@ KEY_END
 git clone https://github.com/oconnor663/arch
 git clone https://github.com/oconnor663/dotfiles
 git clone https://github.com/oconnor663/founder
+rustup set profile minimal
 rustup install stable
 cargo install --path founder
 yay -S --noconfirm peru
