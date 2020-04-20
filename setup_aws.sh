@@ -10,7 +10,9 @@ fi
 
 ln -sf nvim /usr/bin/vim
 
-useradd -m jacko
+if [[ ! -e /home/jacko ]] ; then
+  useradd -m jacko
+fi
 gpasswd -a jacko wheel
 chsh -s /bin/zsh jacko
 
