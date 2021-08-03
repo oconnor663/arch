@@ -47,7 +47,7 @@ luks_name="luks"
 echo -n "$password" | cryptsetup --batch-mode luksFormat "$luks_partition"
 echo -n "$password" | cryptsetup luksOpen "$luks_partition" "$luks_name"
 root_device="/dev/mapper/$luks_name"
-mkfs.ext4 -F "$root_device"
+mkfs.btrfs "$root_device"
 
 mount "$root_device" /mnt
 mkdir /mnt/boot
