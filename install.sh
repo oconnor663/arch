@@ -2,6 +2,16 @@
 
 set -v -e -u -o pipefail
 
+packages=(
+    base
+    base-devel
+    linux
+    linux-firmware
+    intel-ucode
+    networkmanager
+    reflector
+)
+
 drive="${1:-}"
 if [[ -z "$drive" ]] ; then
   echo Must specify a drive.
@@ -43,7 +53,7 @@ mount "$root_device" /mnt
 mkdir /mnt/boot
 mount "$boot_partition" /mnt/boot
 
-pacstrap /mnt base base-devel networkmanager openssh intel-ucode
+pacstrap /mnt "${packages[@]}"
 
 genfstab -p /mnt > /mnt/etc/fstab
 
