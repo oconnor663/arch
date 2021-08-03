@@ -72,7 +72,7 @@ options cryptdevice=$luks_partition:$luks_name root=$root_device rw
 END
 
 cat > /mnt/etc/mkinitcpio.conf <<END
-HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)
+HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt filesystems fsck)
 END
 
 arch-chroot /mnt bash -v -e -u -o pipefail <<END
