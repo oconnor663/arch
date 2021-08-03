@@ -51,6 +51,18 @@ mount "$root_device" /mnt
 mkdir /mnt/boot
 mount "$boot_partition" /mnt/boot
 
+# Make a swapfile that's half the size of physical RAM.
+ram_mb="$(free -m | grep "Mem:" | awk '{print $2}')"
+swap_mb="$(( ram_mb / 2 ))"
+swapfile="/mnt/swapfile"
+truncate -s 0 "$swapfile"
+chattr +C "$swapfile"
+btrfs property set "$swapfile" compression none
+dd if=/dev/zero of="$swapfile" bs=1M count="$swap_mb" status=progress
+chmod 600 "$swapfile"
+mkswap "$swapfile"
+swapon "$swapfile"
+
 pacstrap /mnt "${packages[@]}"
 
 genfstab -p /mnt > /mnt/etc/fstab
