@@ -37,10 +37,10 @@ PARTED() {
 PARTED mklabel gpt
 PARTED mkpart primary 0% 512MiB
 PARTED set 1 esp on
-boot_partition="${drive}1"
+boot_partition="$(ls "${drive}"*1)"
 mkfs.fat -F32 "$boot_partition"
 PARTED mkpart primary 512MiB 100%
-luks_partition="${drive}2"
+luks_partition="$(ls "${drive}"*2)"
 luks_name="luks"
 echo -n "$password" | cryptsetup --batch-mode luksFormat "$luks_partition"
 echo -n "$password" | cryptsetup luksOpen "$luks_partition" "$luks_name"
