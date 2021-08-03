@@ -100,7 +100,7 @@ END
 arch-chroot /mnt bash -v -e -u -o pipefail <<END
   locale-gen
 
-  systemctl enable NetworkManager
+  systemctl enable NetworkManager systemd-timesyncd
 
   hwclock --systohc
 
