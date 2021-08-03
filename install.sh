@@ -81,8 +81,10 @@ initrd  /initramfs-linux.img
 options cryptdevice=$luks_partition:$luks_name root=$root_device rw
 END
 
+# Hooks from https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system
+# minus "fsck", because btrfs doesn't support/need it
 cat > /mnt/etc/mkinitcpio.conf <<END
-HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt filesystems fsck)
+HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt filesystems)
 END
 
 arch-chroot /mnt bash -v -e -u -o pipefail <<END
