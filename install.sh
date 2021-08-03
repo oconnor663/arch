@@ -28,10 +28,8 @@ fi
 # Turn on NTP on the host, so that the time is synced when we get to hwclock.
 timedatectl set-ntp on
 
-curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&use_mirror_status=on" \
-  | sed -e 's/^#Server/Server/' -e '/^#/d' \
-  | rankmirrors -n 5 - \
-  > /etc/pacman.d/mirrorlist
+# Note that "US," means both US and worldwide mirros.
+reflector --country=US, --protocol=https --threads=4 --fastest=5 --save=/etc/pacman.d/mirrorlist
 
 PARTED() {
   parted --script --align optimal "$drive" -- "$@"
