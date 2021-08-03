@@ -2,6 +2,16 @@
 
 set -v -e -u -o pipefail
 
+trap on_exit EXIT
+on_exit() {
+    echo
+    if [[ "$?" = 0 ]] ; then
+        echo 'SUCCESS!'
+    else
+        echo 'FAILURE!'
+    fi
+}
+
 packages=(
     base
     base-devel
@@ -99,3 +109,5 @@ arch-chroot /mnt bash -v -e -u -o pipefail <<END
 
   echo "root:$password" | chpasswd
 END
+
+echo 'SUCCESS!'
